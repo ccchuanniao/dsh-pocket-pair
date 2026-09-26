@@ -245,9 +245,16 @@ Page values override profile defaults when non-empty. Clearing a string on the p
 the profile, so it does **not** reliably disable a previously configured feature. Use `pushEnabled`
 to stop host sending; do not claim this removes Firebase registration from an installed APK.
 
-Install the plugin using the active profile and the verified package source. The README command
-is `dsh plugin --profile <profile> add dsh-pocket-pair`; check availability/help before relying on it.
-If unavailable, report that and use the actual local/released source supported by that Harness version.
+Install the plugin using the active profile and a source that actually resolves. **This package is not
+published to npm**, so `add dsh-pocket-pair` fails — install from the repository instead:
+
+```bash
+dsh plugin --profile <profile> add github.com/<owner>/dsh-pocket-pair
+```
+
+`pnpm` accepts a short `host/user/repo` form, a full `https://` git URL, or a local directory. Run
+`add --help` if you need the exact forms this Harness version supports, and read the failure rather
+than assuming.
 
 Back up changed local config. After a profile change, use the supervisor actually running Harness.
 If restarting it ends your own session, arrange a supported deferred restart and leave a short

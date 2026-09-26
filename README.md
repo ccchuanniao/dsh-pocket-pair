@@ -55,9 +55,22 @@ harness 升级后如果插件行为不对，先看 `GET /api/pocket-pair/state` 
 
 ## 安装
 
+**这个包还没发到 npm**，所以别用 `add dsh-pocket-pair` —— 那样装不上。从仓库装：
+
+```bash
+dsh plugin --profile web add github.com/ccchuanniao/dsh-pocket-pair
 ```
-dsh plugin --profile web add dsh-pocket-pair
-```
+
+也可以给完整地址（`https://github.com/ccchuanniao/dsh-pocket-pair`）或者本地目录。
+`web` 换成你自己的 profile 名。
+
+**懒人做法**：把下面这句连同仓库地址一起丢给你的 AI：
+
+> 帮我装一下这个插件，装完读它目录里的 `AGENTS.md`，然后按上面说的把我的手机配上：
+> https://github.com/ccchuanniao/dsh-pocket-pair
+
+`AGENTS.md` 就是为这个写的 —— 里面写清了怎么查你机器的情况、怎么把配置填进去、
+缺 Firebase 或没有公网 IP 时该怎么给你选择。
 
 装完重启一次 harness（bundle 层是启动时读的）。
 
