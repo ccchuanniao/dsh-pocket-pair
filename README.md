@@ -58,10 +58,10 @@ harness 升级后如果插件行为不对，先看 `GET /api/pocket-pair/state` 
 **这个包还没发到 npm**，所以别用 `add dsh-pocket-pair` —— 那样装不上。从仓库装：
 
 ```bash
-dsh plugin --profile web add github.com/ccchuanniao/dsh-pocket-pair
+dsh plugin --profile web add https://github.com/ccchuanniao/dsh-pocket-pair
 ```
 
-也可以给完整地址（`https://github.com/ccchuanniao/dsh-pocket-pair`）或者本地目录。
+本地目录（`add /path/to/dsh-pocket-pair`）也行。
 `web` 换成你自己的 profile 名。
 
 **懒人做法**：把下面这句连同仓库地址一起丢给你的 AI：

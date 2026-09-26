@@ -249,10 +249,12 @@ Install the plugin using the active profile and a source that actually resolves.
 published to npm**, so `add dsh-pocket-pair` fails — install from the repository instead:
 
 ```bash
-dsh plugin --profile <profile> add github.com/<owner>/dsh-pocket-pair
+dsh plugin --profile <profile> add https://github.com/<owner>/dsh-pocket-pair
 ```
 
-`pnpm` accepts a short `host/user/repo` form, a full `https://` git URL, or a local directory. Run
+**Use the full `https://` URL.** The shorter `host/user/repo` and `host:user/repo` forms are not
+reliable here: pnpm resolves them to a *local directory* and creates a broken `link:` entry instead
+of cloning. A local directory path also works. Run
 `add --help` if you need the exact forms this Harness version supports, and read the failure rather
 than assuming.
 
