@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Never commit these. The first is a live Google credential that can send push to the owner's
+# devices; the rest are runtime state that identifies paired phones.
+firebase-service-account.json
+*.serviceaccount.json
+pairing.json
+settings.json
+push.log
+
+# Published APKs — a build artifact, and it can carry a baked pairing code
+apk/
+*.apk
+
+# Local environment
+.env
+.env.*
+!.env.example
+*.local
+
+# Editors and OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
