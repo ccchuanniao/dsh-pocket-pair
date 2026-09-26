@@ -7,7 +7,7 @@
  *
  * 注意这里只 import，不调用；模块顶层的引用错误足以暴露问题。
  */
-const modules = ['../lib/index.js', '../lib/lan-gate.js', '../lib/build.js', '../lib/fcm.js', '../lib/summarize.js']
+const modules = ['../lib/index.js', '../lib/lan-gate.js', '../lib/build.js', '../lib/fcm.js', '../lib/summarize.js', '../lib/apk-probe.js']
 
 for (const path of modules) {
   try {
