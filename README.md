@@ -108,10 +108,32 @@ dsh plugin --profile web add https://github.com/ccchuanniao/dsh-pocket-pair
 `web` 是 profile 名，**不能随便换**：换之前先确认那个 profile 有 HTTP 服务器层
 （见上面「运行环境」）—— 换成一个没有的（比如 `headless`），插件装得上但手机上连不上。
 
-**懒人做法**：把下面这句连同仓库地址一起丢给你的 AI：
+**懒人做法（自己机器上还没装过任何东西）**：把下面这段整段丢给你的 AI 就行 ——
+它自己会去拉仓库，你不需要先下任何东西：
 
-> 帮我装一下这个插件，装完读它目录里的 `AGENTS.md`，然后按上面说的把我的手机配上：
-> https://github.com/ccchuanniao/dsh-pocket-pair
+> 帮我把 DSH Pocket 装好，让我手机能连上本机这套 DeepSeek Harness。
+>
+> 先拉这两个公开仓库，工作目录你自己选：
+> 宿主插件 https://github.com/ccchuanniao/dsh-pocket-pair
+> 手机 App 源码 https://github.com/ccchuanniao/dsh-pocket
+>
+> 然后读插件仓库里的 `AGENTS.md`（那是写给你的操作手册）按它执行。读之前先看 README 里
+> 「运行环境」那一节：这个插件需要 harness 的 HTTP 服务器层，所以只能装在提供它的 profile
+> （即网页端 `dsh web`）；`headless` 之类没有这一层，装了手机也连不上。拿不准就先按那节里的
+> 命令查一遍，查不到就告诉我。
+>
+> GitHub 上没有现成的安装包，App 要在这台机器上从源码构建 —— 插件自己就能构建和分发
+> （手册里有）。
+>
+> 这台机器的地址、域名、Firebase 值、密钥，你自己找自己填，不要问我；也不要写进任何要提交
+> 或要发出去的东西里。
+>
+> 能自己跑的都自己跑，不要让我去做实验。需要我登录账号、操作手机、或动用我的权限时再告诉我。
+>
+> 最后告诉我：手机在哪些网络能用、通知有没有实测收到、以及还需要我做什么。
+
+（如果你**已经**装好插件、只是想把它配起来，那用页面上的「复制提示词」按钮更短 ——
+它已经知道东西在哪了。）
 
 `AGENTS.md` 就是为这个写的 —— 里面写清了怎么查你机器的情况、怎么把配置填进去、
 缺 Firebase 或没有公网 IP 时该怎么给你选择。
