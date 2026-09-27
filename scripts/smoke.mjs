@@ -19,3 +19,15 @@ for (const path of modules) {
     process.exit(1)
   }
 }
+
+// 等待出包时的动画是宿主路由按路径读的一个文件，不是 import —— 漏出包里不会在
+// 任何导入检查里露头，只会在页面上留下一块空白。这里读一次，把它提前暴露出来。
+try {
+  const { readFileSync } = await import('node:fs')
+  const size = readFileSync(new URL('../lib/assets/splash.html', import.meta.url)).length
+  console.log(`读得到: ../lib/assets/splash.html（${size} 字节）`)
+}
+catch (error) {
+  console.error(`读不到 ../lib/assets/splash.html\n  ${error}`)
+  process.exit(1)
+}
