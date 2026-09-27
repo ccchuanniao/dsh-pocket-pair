@@ -2,6 +2,10 @@
 
 让一台手机（DSH Pocket）配对到这台 DeepSeek Harness 主机的插件。
 
+手机端 App 在另一个仓库：[ccchuanniao/dsh-pocket](https://github.com/ccchuanniao/dsh-pocket)。
+那边是源码，GitHub 上**没有现成的安装包** —— 装好本插件之后，它可以从源码把安装包打出来并自己分发
+（见下面「配置」里的 `buildEnabled` / `buildProjectDir`）。
+
 网页端「设置 → 手机配对」里生成一个一次性配对码，手机扫码或手输地址 + 码完成配对。
 插件同时充当**闸门**：已配对的设备靠自己的设备令牌进来，可以按设备单独吊销。
 
@@ -43,7 +47,7 @@
 | --- | --- |
 | DeepSeek Harness | `0.1.x`（`peerDependencies` 声明 `^0.1.1-rc.2`）。**实测过的只有 `0.1.5-rc.2`** |
 | Node | 与 harness 自身的要求一致 |
-| 手机端 | DSH Pocket 这个 App，Android 8.0（API 26）及以上 |
+| 手机端 | [DSH Pocket](https://github.com/ccchuanniao/dsh-pocket) 这个 App，Android 8.0（API 26）及以上 |
 | **运行环境（profile）** | 必须提供 harness 的 **HTTP 服务器层**，即网页端 `dsh web`。没有这一层的 profile（如 `headless`）**不支持**，原因见下 |
 
 **关于"0.1.x 都行"这句话的分量：** 插件依赖的是 harness 内部接口
