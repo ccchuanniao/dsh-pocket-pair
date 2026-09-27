@@ -44,6 +44,7 @@
 | DeepSeek Harness | `0.1.x`（`peerDependencies` 声明 `^0.1.1-rc.2`）。**实测过的只有 `0.1.5-rc.2`** |
 | Node | 与 harness 自身的要求一致 |
 | 手机端 | DSH Pocket 这个 App，Android 8.0（API 26）及以上 |
+| **运行环境（profile）** | 必须提供 harness 的 **HTTP 服务器层**，即网页端 `dsh web`。没有这一层的 profile（如 `headless`）**不支持**，原因见下 |
 
 **关于"0.1.x 都行"这句话的分量：** 插件依赖的是 harness 内部接口
 （`ctx.llm.stream`、`agent/status`、`session/event`、`connection.fetch.register`），
@@ -52,6 +53,43 @@
 
 harness 升级后如果插件行为不对，先看 `GET /api/pocket-pair/state` 能不能正常返回，
 再看 `pushTrace` 里的 `sessionEvents` 计数是不是 0（是 0 就说明事件名或载荷形状变了）。
+
+### 运行环境：必须是有 HTTP 服务器层的那种 profile
+
+插件依赖 harness 的 HTTP 服务器层，bundle 名是 `@deepseek-ai/dsh-host-webserver`。
+它**不是** harness 的基础设施，而是随**网页端**一起提供的 —— 所以插件只能装在提供它的
+profile 里，也就是 `dsh web`（等价于 `dsh --profile web`）。
+
+判据可以复现，不用听我说：
+
+```bash
+dsh --profile web      --dump-config | grep -A1 webserver   # 有
+dsh --profile headless --dump-config | grep -A1 webserver   # 没有
+```
+
+它不属于基础层，从依赖上也能看出来：
+
+```bash
+node -e "console.log(Object.keys(require('@deepseek-ai/dsh-web-app/package.json').dependencies))"
+# 含 @deepseek-ai/dsh-host-webserver；@deepseek-ai/dsh-base 里没有
+```
+
+插件用到这一层的两个地方，**都没有替代路径**：
+
+| 用途 | 接口 | 这一层不在会怎样 |
+| --- | --- | --- |
+| 局域网闸门的上游端口 | `ctx.webServer.port` | 闸门不启动，界面显示「局域网入口：未启用」 |
+| 三条公开路由：兑现 / 等待动画 / **安装包下载** | `ctx.webServer.register` | 路由注册失败；手机下载不到安装包，也兑现不了 |
+
+换句话说：**没有 HTTP 服务器层的 profile，手机上没有任何地址可连。** 这不是配置没填对，
+是这个插件的前提不成立 —— 换配置、换地址都救不回来。
+
+**实测过的**：`web` 有这一层；`headless` 没有。
+
+**没实测的**：`desktop`。这个名字被 Electron 桌面版独占，命令行明确拒绝对它做任何管理
+（`error: profile "desktop" is managed exclusively by the Electron application`），
+所以上面那条命令在它身上用不了，我没有验证过它是否自带这一层。要在桌面版上用，
+得直接看它 profile 目录的组成，确认有 `webserver` 再说。
 
 ## 安装
 
@@ -62,7 +100,9 @@ dsh plugin --profile web add https://github.com/ccchuanniao/dsh-pocket-pair
 ```
 
 本地目录（`add /path/to/dsh-pocket-pair`）也行。
-`web` 换成你自己的 profile 名。
+
+`web` 是 profile 名，**不能随便换**：换之前先确认那个 profile 有 HTTP 服务器层
+（见上面「运行环境」）—— 换成一个没有的（比如 `headless`），插件装得上但手机上连不上。
 
 **懒人做法**：把下面这句连同仓库地址一起丢给你的 AI：
 

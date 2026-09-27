@@ -40,6 +40,28 @@ Two parts are needed: the host plugin admits/revokes devices and sends push; the
 shows the host's console and receives push. The app requires Android 8 or later. FCM additionally
 needs compatible Google Play services and connectivity to Google; console access does not.
 
+**Before installing anything, check the runtime requirement: the plugin needs an HTTP server layer
+on the host.** It is `@deepseek-ai/dsh-host-webserver`, and the plugin uses it in two places with
+no fallback. The LAN gate takes its upstream port from `ctx.webServer.port`; the redeem route, the
+wait animation, and the APK download are registered through `ctx.webServer.register`. Without that
+layer the gate never starts and a phone has no address to reach — so the plugin cannot work there
+at all, and no amount of configuration changes that.
+
+That layer ships with the web app rather than with the base tree, so the plugin belongs in a
+profile that provides it: `dsh web` (`--profile web`). Verify instead of assuming:
+
+```bash
+dsh --profile <name> --dump-config | grep -A1 webserver
+node -e "console.log(Object.keys(require('@deepseek-ai/dsh-web-app/package.json').dependencies))"
+```
+
+Measured on the development host: `web` has it, `headless` does not; `dsh-base` does not depend on
+it, `dsh-web-app` does. The `desktop` profile is **not** measured — its name is owned by the
+Electron application and the CLI refuses every management request for it
+(`error: profile "desktop" is managed exclusively by the Electron application`), so read that
+profile's composition directly if a desktop install is in play, and say plainly that it is
+unverified until you have.
+
 1. Locate the plugin from the active Harness profile/package installation. Use its package.json,
    README and `lib/index.js` to confirm the installed version and supported fields. If only this
    Android repository is present, locate/install the host plugin before claiming setup is complete.
